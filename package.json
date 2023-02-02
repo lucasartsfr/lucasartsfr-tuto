@@ -1,0 +1,21 @@
+{
+  "name": "formations",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "export": "next build && next export",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@next/font": "13.1.6",
+    "ffmpeg-static": "^5.1.0",
+    "get-video-duration": "^4.1.0",
+    "next": "13.1.6",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "uuid": "^9.0.0"
+  }
+}
