@@ -1,5 +1,68 @@
-import '@/styles/globals.css'
+import Layout from '@/Components/Layout';
+import '@/styles/globals.css';
+import { Josefin_Sans } from '@next/font/google';
+import { useEffect, useState } from 'react';
 
-export default function App({ Component, pageProps }) {
-  return <Component {...pageProps} />
+import Parallax from 'parallax-js';
+
+const Josefin = Josefin_Sans({
+  weight: 'variable',
+  style: ['normal', 'italic'],
+  subsets: ['latin'],
+})
+
+export default function App({ Component, pageProps}) {
+
+  const [data, setData] = useState([]);
+  useEffect(() =>{
+    async function fetchData() {
+        const response = await fetch('https://formation.lucasarts.fr');
+        const jsonData = await response.json();
+        setData(jsonData);
+      }      
+      fetchData();
+
+
+      var DynamicWallpaper = document.querySelector('.DynamicWallpaper');
+      var parallaxInstance = new Parallax(DynamicWallpaper, {
+        relativeInput: false,
+        hoverOnly: false,
+        frictionX : .1,
+        frictionY : .1
+      });
+  }, [])
+
+
+  return (
+    <>
+        <style jsx global>{`* {font-family: ${Josefin.style.fontFamily};}`}</style>
+        <Component {...pageProps} />       
+        <div className='DynamicWallpaper'>
+          <section className='BlobSection' data-depth="-5">
+            <div className="tk-blob Blob1">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 440.7 428.7">
+                <path d="M410.6 78.8c36 52.5 36.1 126 19.2 194C412.9 340.7 379 403 330 421.9c-49 19-113.1-5.3-178.6-34C85.8 359.2 18.7 326.1 3.5 276.4-11.7 226.7 25 160.3 71.7 105.3 118.3 50.3 174.8 6.8 239 .7c64.1-6 135.7 25.5 171.6 78.1z"></path>
+              </svg>
+            </div>
+          </section>
+          <section className='BlobSection' data-depth=".5">
+            <div className="tk-blob Blob2">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 440.7 428.7">
+                <path d="M410.6 78.8c36 52.5 36.1 126 19.2 194C412.9 340.7 379 403 330 421.9c-49 19-113.1-5.3-178.6-34C85.8 359.2 18.7 326.1 3.5 276.4-11.7 226.7 25 160.3 71.7 105.3 118.3 50.3 174.8 6.8 239 .7c64.1-6 135.7 25.5 171.6 78.1z"></path>
+              </svg>
+            </div>
+          </section>
+          <section className='BlobSection' data-depth="5">
+            <div className="tk-blob Blob3">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 440.7 428.7">
+                <path d="M410.6 78.8c36 52.5 36.1 126 19.2 194C412.9 340.7 379 403 330 421.9c-49 19-113.1-5.3-178.6-34C85.8 359.2 18.7 326.1 3.5 276.4-11.7 226.7 25 160.3 71.7 105.3 118.3 50.3 174.8 6.8 239 .7c64.1-6 135.7 25.5 171.6 78.1z"></path>
+              </svg>
+            </div>
+          </section>
+        </div>    
+        <Layout data={data} />    
+    </>
+  )
 }
+
+

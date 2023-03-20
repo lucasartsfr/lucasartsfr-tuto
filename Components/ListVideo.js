@@ -1,30 +1,39 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { v4 as uuidv4 } from 'uuid';
+import {HiPlay as Player} from "react-icons/hi2";
+import {FiClock as Clock} from "react-icons/fi";
+import FormattedTime from './FormattedTime';
 
-export default function ListVideo({SubTitle, Name, Title, Duration}){
+export default function ListVideo({SubTitle, Name, SelectVideo, Duration, Path, setSelectVideo, Index}){
+    const [isPaused, setIsPaused] = useState(false); // ajouter l'état initial
 
-    const VideoRef = useRef(null);
-
-    const handleLoadedMetadata = (e) => {
-        // const video = VideoRef.current;
-        // setDuration(video.duration);
-        // const canvas = document.createElement("canvas");
-        // canvas.width = video.videoWidth;
-        // canvas.height = video.videoHeight;
-        // canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height, 0, 0, canvas.width, canvas.height);
-        // video.currentTime = 4;
-      };
-   
+    // Set Video Path on Play
+    const ClickPlay = (e) =>{ 
+      SelectVideo !== Path && setSelectVideo(Path) 
+      e.currentTarget.classList.toggle('ToPause')
+      setIsPaused(!isPaused); // mettre à jour l'état de ToPause
+    } 
+    
+    // Custom Icon on Play
+    const AnimatedPlay = <div className='AnimatedPlay'><div></div><div></div><div></div></div>;
+    const PausePlay = <Player className='PlayerVideo'/>;
+    const PlayIcon = isPaused ? PausePlay : (SelectVideo == Path) ? AnimatedPlay : PausePlay; // utiliser l'état de ToPause Dynamique
+    const Active = (SelectVideo == Path) ? "Active" : ""; // Class
 
     return(
-        <div key={uuidv4()}>
-          <h4>{Name.split('.mp4')[0]}</h4>
-            <span key={uuidv4()}> {Duration || 0} secondes</span>
-            <video className={this} ref={VideoRef} key={uuidv4()} width={200} onLoadedMetadata={handleLoadedMetadata} preload="metadata">
-              <source               
-                type="video/mp4" 
-                src={`https://drive.lucasarts.fr/admin/uploads/Formations/${Title}/${SubTitle}/${Name}`}/>
-            </video>
+        <div className={`ListVideo ${Active}`} key={uuidv4()} onClick={ClickPlay} >
+          <div className='PlayerVideoContainer'>   
+          {PlayIcon}   
+          </div>
+          <div className='PosterVideo'>
+            <img src={`https://formation.lucasarts.fr/poster/${SubTitle.split('/')[0]}.jpg`}></img>
+          </div>
+          <h4 className='TitleVideo'>{Name.split('.mp4')[0]}</h4>
+          {/* <span className='ChapterVideo'>{SubTitle.split('/')[1]}</span> */}
+          <span className='DurationVideo'>
+            <Clock className='ClockVideo'/>
+            <FormattedTime mode="d" seconds={Duration} />
+          </span>
         </div>
     )
 }
